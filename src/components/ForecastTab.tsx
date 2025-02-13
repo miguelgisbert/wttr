@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tab, Tabs, Box } from '@mui/material';
 import WeatherTable from './WeatherTable';
+import { HourlyData } from '../types';
 
 interface ForecastTabProps {
   days: {
     date: string;
-    hourly: any[];
+    hourly: HourlyData[];
   }[];
   selectedDay: number;
   onTabChange: (dayIndex: number) => void;
 }
 
 const ForecastTab: React.FC<ForecastTabProps> = ({ days, selectedDay, onTabChange }) => {
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     onTabChange(newValue);
   };
 
@@ -23,7 +24,9 @@ const ForecastTab: React.FC<ForecastTabProps> = ({ days, selectedDay, onTabChang
           <Tab key={index} label={day.date} />
         ))}
       </Tabs>
-      <WeatherTable hourlyData={days[selectedDay].hourly} />
+      {days[selectedDay] && days[selectedDay].hourly && (
+        <WeatherTable hourlyData={days[selectedDay].hourly} />
+      )}
     </Box>
   );
 };

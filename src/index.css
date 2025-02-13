@@ -5,9 +5,8 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #494848;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0;
 
   font-synthesis: none;
@@ -33,6 +32,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
+  background-color: #e2eafc;
   min-width: 320px;
   min-height: 100vh;
 }
