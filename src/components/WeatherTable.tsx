@@ -1,9 +1,5 @@
 import React from 'react';
-import { TableContainer, Paper, Typography } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ThermostatIcon from '@mui/icons-material/Thermostat';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import AirIcon from '@mui/icons-material/Air';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { WiTime1, WiThermometer, WiDaySunny, WiStrongWind, WiCloud, WiDayCloudy, WiNightClear, WiRain, WiSnow, WiFog } from 'react-icons/wi';
 import Navigation from '@mui/icons-material/Navigation';
 import './WeatherTable.css';
@@ -63,41 +59,45 @@ const getWindDirectionIcon = (degree: string) => {
 const WeatherTable: React.FC<WeatherTableProps> = ({ hourlyData }) => {
   return (
     <TableContainer component={Paper}>
-      <div className="weather-table">
-        <div className="weather-table-header">
-          <div>
-            <WiTime1 size={24} /> Time
-          </div>
-          <div>
-            <WiThermometer size={24} /> Temperature
-          </div>
-          <div>
-            <WiDaySunny size={24} /> Weather
-          </div>
-          <div>
-            <WiStrongWind size={24} /> Wind Speed (km/h)
-          </div>
-        </div>
-        {hourlyData.map((hour, index) => (
-          <div className="weather-table-row" key={index}>
-            <div>{formatTime(hour.time)}</div>
-            <div>{hour.tempC} °C</div>
-            <div>
-              {hour.weatherDesc.length > 0 ? (
-                <>
-                  {getWeatherIcon(hour.weatherDesc[0].value)}
-                  {hour.weatherDesc[0].value}
-                </>
-              ) : (
-                'N/A'
-              )}
-            </div>
-            <div>
-              {getWindDirectionIcon(hour.winddirDegree)} {hour.windspeedMiles} km/h
-            </div>
-          </div>
-        ))}
-      </div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+              <WiTime1 size={24} />
+            </TableCell>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+              <WiThermometer size={24} />
+            </TableCell>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+              <WiDaySunny size={24} />
+            </TableCell>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+              <WiStrongWind size={24} />
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {hourlyData.map((hour, index) => (
+            <TableRow key={index}>
+              <TableCell className="table-cell" sx={{ textAlign: "center" }}>{formatTime(hour.time)}</TableCell>
+              <TableCell className="table-cell" sx={{ textAlign: "center" }}>{hour.tempC} °C</TableCell>
+              <TableCell className="table-cell" sx={{ textAlign: "center" }}>
+                {hour.weatherDesc.length > 0 ? (
+                  <>
+                    {getWeatherIcon(hour.weatherDesc[0].value)}
+                    {hour.weatherDesc[0].value}
+                  </>
+                ) : (
+                  'N/A'
+                )}
+              </TableCell>
+              <TableCell className="table-cell" sx={{ textAlign: "center" }}>
+                {getWindDirectionIcon(hour.winddirDegree)} {hour.windspeedMiles} km/h
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </TableContainer>
   );
 };

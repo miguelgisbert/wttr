@@ -4,6 +4,8 @@ import './styles/App.css';
 import { Grid, Typography, TextField, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { WeatherData } from './types';
+import NoResultsImage from './assets/no-results.svg';
+import WelcomeImage from './assets/wellcome.svg';
 
 
 function App() {
@@ -11,6 +13,7 @@ function App() {
   const [selectedDay, setSelectedDay] = useState<number>(0);
   const [location, setLocation] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   const fetchWeatherData = async (city: string) => {
     const apiUrl = `https://wttr.in/${city}?format=j1`;
@@ -32,6 +35,7 @@ function App() {
     if (inputValue.trim()) {
       setLocation(inputValue.trim());
       fetchWeatherData(inputValue.trim());
+      setHasSearched(true);
     }
   };
 
@@ -77,9 +81,18 @@ function App() {
         </Grid>
       ) : (
         <Grid item>
-          <Typography color="primary" display="flex" justifyContent="center" alignContent="center" margin="50px">
-            No weather data available
-          </Typography>
+          {hasSearched ? (
+              <>
+              <img src={NoResultsImage} alt="No results" style={{ width: 200, height: 200 }} />
+              <Typography color="primary" display="flex" justifyContent="center" alignContent="center" margin="50px">
+                No weather data available
+              </Typography>
+            </>
+          ) : (
+            <Grid container justifyContent="center" alignItems="center" marginTop="100px">
+              <img src={WelcomeImage} alt="Welcome" style={{ width: 300 }} />
+            </Grid>
+          )}
           <ForecastTab days={[]} selectedDay={selectedDay} onTabChange={handleTabChange} />
         </Grid>
       )}
