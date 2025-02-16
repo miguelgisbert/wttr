@@ -1,25 +1,9 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { WiTime1, WiThermometer, WiDaySunny, WiStrongWind, WiCloud, WiDayCloudy, WiNightClear, WiRain, WiSnow, WiFog } from 'react-icons/wi';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid, Box } from '@mui/material';
+import { WiTime1, WiThermometer, WiDaySunny, WiStrongWind, WiCloud, WiDayCloudy, WiRain, WiSnow, WiFog } from 'react-icons/wi';
 import Navigation from '@mui/icons-material/Navigation';
-import './WeatherTable.css';
-
-interface WeatherDesc {
-  value: string;
-}
-
-interface HourlyForecast {
-  time: string;
-  tempC: string;
-  weatherCode: string;
-  weatherDesc: WeatherDesc[];
-  windspeedMiles: string;
-  winddirDegree: string;
-}
-
-interface WeatherTableProps {
-  hourlyData: HourlyForecast[];
-}
+import '../styles/WeatherTable.css';
+import { WeatherTableProps } from '../types';
 
 const formatTime = (time: string) => {
   const hours = Math.floor(parseInt(time) / 100);
@@ -30,6 +14,7 @@ const formatTime = (time: string) => {
 const getWeatherIcon = (description: string) => {
   switch (description.trim().toLowerCase()) {
     case 'clear':
+    case 'sunny':
       return <WiDaySunny size={24} />;
     case 'partly cloudy':
       return <WiDayCloudy size={24} />;
@@ -47,7 +32,7 @@ const getWeatherIcon = (description: string) => {
     case 'light rain shower':
       return <WiRain size={24} />;
     default:
-      return <WiNightClear size={24} />;
+      return <WiCloud size={24} />;
   }
 };
 
@@ -62,16 +47,16 @@ const WeatherTable: React.FC<WeatherTableProps> = ({ hourlyData }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>
               <WiTime1 size={24} />
             </TableCell>
-            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>
               <WiThermometer size={24} />
             </TableCell>
-            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>
               <WiDaySunny size={24} />
             </TableCell>
-            <TableCell className="table-header-cell" sx={{ textAlign: "center" }}>
+            <TableCell className="table-header-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>
               <WiStrongWind size={24} />
             </TableCell>
           </TableRow>
@@ -79,20 +64,27 @@ const WeatherTable: React.FC<WeatherTableProps> = ({ hourlyData }) => {
         <TableBody>
           {hourlyData.map((hour, index) => (
             <TableRow key={index}>
-              <TableCell className="table-cell" sx={{ textAlign: "center" }}>{formatTime(hour.time)}</TableCell>
-              <TableCell className="table-cell" sx={{ textAlign: "center" }}>{hour.tempC} °C</TableCell>
-              <TableCell className="table-cell" sx={{ textAlign: "center" }}>
+              <TableCell className="table-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>{formatTime(hour.time)}</TableCell>
+              <TableCell className="table-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>{hour.tempC} °C</TableCell>
+              <TableCell className="table-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>
                 {hour.weatherDesc.length > 0 ? (
-                  <>
-                    {getWeatherIcon(hour.weatherDesc[0].value)}
-                    {hour.weatherDesc[0].value}
-                  </>
+                  <Grid container justifyContent="center" alignItems="center" minWidth={100}>
+                    <Box sx={{ margin: "2px 10px" }} alignItems={"center"} display={"flex"}>
+                      {getWeatherIcon(hour.weatherDesc[0].value)}
+                    </Box>
+                    <Typography>{hour.weatherDesc[0].value}</Typography>
+                  </Grid>
                 ) : (
                   'N/A'
                 )}
               </TableCell>
-              <TableCell className="table-cell" sx={{ textAlign: "center" }}>
-                {getWindDirectionIcon(hour.winddirDegree)} {hour.windspeedMiles} km/h
+              <TableCell className="table-cell" sx={{ textAlign: "center", verticalAlign: "middle" }}>
+                <Grid container justifyContent="center" alignItems="center" minWidth={100}>
+                  <Box sx={{ margin: "2px 10px" }} alignItems={"center"} display={"flex"}>
+                    {getWindDirectionIcon(hour.winddirDegree)}
+                  </Box>
+                  <Typography>{hour.windspeedMiles} km/h</Typography>
+                </Grid>
               </TableCell>
             </TableRow>
           ))}

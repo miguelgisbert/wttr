@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ForecastTab from './components/ForecastTab';
 import './styles/App.css';
-import { Grid, Typography, TextField, IconButton } from '@mui/material';
+import { Grid, Typography, TextField, IconButton, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { WeatherData } from './types';
 import NoResultsImage from './assets/no-results.svg';
@@ -14,11 +14,14 @@ function App() {
   const [location, setLocation] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
   const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchWeatherData = async (city: string) => {
     const apiUrl = `https://wttr.in/${city}?format=j1`;
 
     try {
+      setIsLoading(true);
+      setWeatherData(null);
       const response = await fetch(apiUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -28,6 +31,8 @@ function App() {
     } catch (error) {
       console.error('Error fetching weather data:', error);
       setWeatherData(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,13 +86,17 @@ function App() {
         </Grid>
       ) : (
         <Grid item>
-          {hasSearched ? (
-              <>
-              <img src={NoResultsImage} alt="No results" style={{ width: 200, height: 200 }} />
-              <Typography color="primary" display="flex" justifyContent="center" alignContent="center" margin="50px">
+          {isLoading ? (
+            <Grid container justifyContent="center" alignItems="center" marginTop="100px">
+              <CircularProgress />
+            </Grid>
+          ) : hasSearched ? (
+              <Grid container direction="column" justifyContent="center" alignItems="center" marginTop="100px">
+              <img src={NoResultsImage} alt="No results" style={{ width: 250, height: 250 }} />
+              <Typography color="primary" display="flex" justifyContent="center" alignContent="center" margin="30px">
                 No weather data available
               </Typography>
-            </>
+            </Grid>
           ) : (
             <Grid container justifyContent="center" alignItems="center" marginTop="100px">
               <img src={WelcomeImage} alt="Welcome" style={{ width: 300 }} />

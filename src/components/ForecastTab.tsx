@@ -1,19 +1,25 @@
 import React from 'react';
-import { Tab, Tabs, Box } from '@mui/material';
+import { Tab, Tabs, Box, Typography, Grid } from '@mui/material';
 import WeatherTable from './WeatherTable';
-import { HourlyData } from '../types';
+import { ForecastTabProps } from '../types';
+import "../styles/ForecastTab.css";
 
-interface ForecastTabProps {
-  days: {
-    date: string;
-    hourly: HourlyData[];
-  }[];
-  selectedDay: number;
-  onTabChange: (dayIndex: number) => void;
-}
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+};
+
+const getDayOfWeek = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', { weekday: 'long' });
+};
 
 const ForecastTab: React.FC<ForecastTabProps> = ({ days, selectedDay, onTabChange }) => {
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     onTabChange(newValue);
   };
 
@@ -21,7 +27,19 @@ const ForecastTab: React.FC<ForecastTabProps> = ({ days, selectedDay, onTabChang
     <Box>
       <Tabs value={selectedDay} onChange={handleChange} aria-label="weather forecast tabs">
         {days.map((day, index) => (
-          <Tab key={index} label={day.date} />
+          <Tab 
+            key={index} 
+            label={
+              <Box>
+                <Typography variant="body1">{getDayOfWeek(day.date)}</Typography>
+                <Typography variant="body2">{formatDate(day.date)}</Typography>
+                <Grid container justifyContent="space-between">
+                  <Typography variant="body1" color='red'>{day.maxtempC}°C</Typography>
+                  <Typography variant="body1" color='darkBlue'>{day.mintempC}°C</Typography>
+                </Grid>
+              </Box>
+            }
+          />
         ))}
       </Tabs>
       {days[selectedDay] && days[selectedDay].hourly && (
