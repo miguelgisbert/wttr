@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .tab {
@@ -21,6 +22,26 @@
 .tab.active {
     background-color: #1976d2;
     color: white;
+}
+
+.temperature-min, .temperature-max {
+    font-size: 1rem; 
+}
+
+.temperature-max {
+    color: red;
+    margin-right: 10px!important;
+}
+
+.temperature-min {
+    color: blue;
+}
+
+@media (max-width: 600px) {
+    .temperature-max,
+    .temperature-min {
+        font-size: 0.8rem!important; 
+    }
 }
 
 .weather-table {

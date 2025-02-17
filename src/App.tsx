@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import ForecastTab from './components/ForecastTab';
-import './styles/App.css';
 import { Grid, Typography, TextField, IconButton, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { WeatherData } from './types';
 import NoResultsImage from './assets/no-results.svg';
 import WelcomeImage from './assets/wellcome.svg';
-
+import './styles/app.css'
 
 function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -55,10 +54,10 @@ function App() {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" minWidth={600} sx={{ margin: "100px 50px" }}>
+    <Grid container justifyContent="center" alignItems="center">
       <Grid container item xs={12} justifyContent="center" alignItems="center">
         <TextField
-          sx={{ width: "100%", maxWidth: 400 }}
+          className='search-input'
           variant="outlined"
           label="Search City"
           value={inputValue}
@@ -74,8 +73,8 @@ function App() {
         />
       </Grid>
       {weatherData ? (
-        <Grid item>
-          <Typography className="capitalize" color="primary" display="flex" justifyContent="center" alignContent="center" margin="50px">
+        <Grid item width="100%" className="weather-container">
+          <Typography className="capitalize" color="primary" display="flex" justifyContent="center" alignContent="center">
             <h1>{location}</h1>
           </Typography>
           <ForecastTab

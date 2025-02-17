@@ -12,3 +12,10 @@
   vertical-align: middle;
   font-weight: bold;
 }
+
+@media (max-width: 600px) {
+  .table-cell {
+    font-size: 0.8rem!important;
+    padding: 10px!important;
+  }
+}

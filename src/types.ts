@@ -1,15 +1,15 @@
-
 /* ForecastTabProps */
 
 export interface ForecastTabProps {
   days: {
     date: string;
     hourly: HourlyData[];
+    maxtempC: string;
+    mintempC: string;
   }[];
   selectedDay: number;
   onTabChange: (dayIndex: number) => void;
 }
-
 
 /* WeatherData */
 export interface HourlyData {
@@ -25,6 +25,8 @@ export interface WeatherData {
   weather: {
     date: string;
     hourly: HourlyData[];
+    maxtempC: string;
+    mintempC: string;
   }[];
 }
 
@@ -44,4 +46,3 @@ export interface HourlyForecast {
 export interface WeatherTableProps {
   hourlyData: HourlyForecast[];
 }
-

@@ -25,7 +25,7 @@ const ForecastTab: React.FC<ForecastTabProps> = ({ days, selectedDay, onTabChang
 
   return (
     <Box>
-      <Tabs value={selectedDay} onChange={handleChange} aria-label="weather forecast tabs">
+      <Tabs value={selectedDay} onChange={handleChange} aria-label="weather forecast tabs" variant="fullWidth">
         {days.map((day, index) => (
           <Tab 
             key={index} 
@@ -33,9 +33,9 @@ const ForecastTab: React.FC<ForecastTabProps> = ({ days, selectedDay, onTabChang
               <Box>
                 <Typography variant="body1">{getDayOfWeek(day.date)}</Typography>
                 <Typography variant="body2">{formatDate(day.date)}</Typography>
-                <Grid container justifyContent="space-between">
-                  <Typography variant="body1" color='red'>{day.maxtempC}°C</Typography>
-                  <Typography variant="body1" color='darkBlue'>{day.mintempC}°C</Typography>
+                <Grid container justifyContent="center" alignItems="center">
+                  <Typography variant="body2" className='temperature-max'>{day.maxtempC}°C</Typography>
+                  <Typography variant="body2" className='temperature-min'>{day.mintempC}°C</Typography>
                 </Grid>
               </Box>
             }
